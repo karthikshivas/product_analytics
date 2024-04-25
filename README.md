@@ -41,13 +41,11 @@ Events accepted: "login", "logout", "subscription_activated", "unsubscribed"
 curl -X POST http://localhost:4000/api/events \
  -H "Content-Type: application/json" \
  -d '{
-"event": {
 "user_id": "user1",
 "event_name": "subscription_activated",
 "attributes": {
 "plan": "pro",
 "billing_interval": "year"
-}
 }
 }'
 
