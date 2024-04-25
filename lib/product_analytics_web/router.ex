@@ -28,6 +28,8 @@ defmodule ProductAnalyticsWeb.Router do
     resources "/events", EventController, except: [:new, :edit]
 
     get "/user_analytics", UserAnalyticsController, :index
+
+    get "/event_analytics", UserAnalyticsController, :event_analytics
   end
 
   # Other scopes may use custom stacks.
