@@ -56,11 +56,11 @@ Example Response:
 
 3. Get Event Analytics with events grouped by date and shows total even count and unique user count within that date range
 
-curl -X GET 'http://localhost:4000/api/event_analytics?from=2024-04-25&to=2024-04-25&event_name=login'
+curl -X GET 'http://localhost:4000/api/event_analytics?from=2024-04-24&to=2024-04-25&event_name=login'
 
 Example Response
 
-{"data":[{"count":5,"date":"2024-04-25","unique_count":4}]}
+{"data":[{"count":1,"date":"2024-04-24","unique_count":1},{"count":14,"date":"2024-04-25","unique_count":4}]}
 
 To run tests:
 mix test
