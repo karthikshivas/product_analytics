@@ -7,10 +7,8 @@ Prerequisites:
 Elixir (>= 1.10)
 Erlang (>= 22)
 PostgreSQL
-Installation
+
 Clone the repository:
-bash
-Copy code
 git clone https://github.com/karthikshivas/product_analytics.git
 
 Navigate to the project directory:
@@ -26,6 +24,7 @@ Start the Phoenix server:
 mix phx.server
 
 Interact with the API using tools like curl or Postman:
+
 Create an Event:
 curl -X POST http://localhost:4000/api/events \
  -H "Content-Type: application/json" \
@@ -39,6 +38,7 @@ curl -X POST http://localhost:4000/api/events \
 }
 }
 }'
+
 Example response:
 {
 "id": 1,
