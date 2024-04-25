@@ -6,7 +6,6 @@ defmodule ProductAnalyticsWeb.UserAnalyticsController do
   alias ProductAnalytics.Events.Event
 
   def index(conn, params) do
-    IO.inspect(params, label: "params")
     event_name = Map.get(params, "event_name", nil)
 
     events_query =
@@ -43,12 +42,13 @@ defmodule ProductAnalyticsWeb.UserAnalyticsController do
     |> json(%{data: formatted_events})
   end
 
-  def event_analytics(conn, %{
-        "from" => from_date_str,
-        "to" => to_date_str,
-        "event_name" => event_name
-      }) do
-    case {Date.from_iso8601(from_date_str), Date.from_iso8601(to_date_str)} do
+  def event_analytics(conn, params) do
+    from_date_str = Map.get(params, "from")
+    to_date_str = Map.get(params, "to")
+    event_name = Map.get(params, "event_name", nil)
+
+    case {parse_and_validate_date("#{from_date_str} 00:00:00"),
+          parse_and_validate_date("#{to_date_str} 23:59:59")} do
       {{:ok, from_date}, {:ok, to_date}} ->
         events_query =
           case is_nil(event_name) do
@@ -107,5 +107,15 @@ defmodule ProductAnalyticsWeb.UserAnalyticsController do
       last_event_at: last_event_at,
       event_count: event_count
     }
+  end
+
+  defp parse_and_validate_date(date_str) do
+    case Timex.parse(date_str, "{ISO:Extended}") do
+      {:ok, date} ->
+        {:ok, date}
+
+      {:error, _reason} ->
+        nil
+    end
   end
 end

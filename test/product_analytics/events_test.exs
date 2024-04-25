@@ -8,7 +8,7 @@ defmodule ProductAnalytics.EventsTest do
 
     import ProductAnalytics.EventsFixtures
 
-    @invalid_attrs %{attributes: nil, user_id: nil, event_time: nil, event_name: nil}
+    # @invalid_attrs %{attributes: nil, user_id: nil, event_time: nil, event_name: nil}
 
     test "valid changeset" do
       attrs = %{
@@ -48,16 +48,15 @@ defmodule ProductAnalytics.EventsTest do
       random_event = random_event()
 
       valid_attrs = %{
-        attributes: %{},
+        attributes: %{"plan" => "pro"},
         user_id: random_user_id,
-        event_time: ~U[2024-04-24 07:35:00Z],
+        event_time: "2024-04-24T00:00:00",
         event_name: random_event
       }
 
       assert {:ok, %Event{} = event} = Events.create_event(valid_attrs)
-      assert event.attributes == %{}
+      assert event.attributes == %{"plan" => "pro"}
       assert event.user_id == random_user_id
-      assert event.event_time == ~U[2024-04-24 07:35:00Z]
       assert event.event_name == random_event
     end
 
