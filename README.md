@@ -25,6 +25,8 @@ mix phx.server
 
 Interact with the API using tools like curl or Postman:
 
+Events accepted: "login", "logout", "subscription_activated", "unsubscribed", "payment_received"
+
 Create an Event:
 curl -X POST http://localhost:4000/api/events \
  -H "Content-Type: application/json" \
