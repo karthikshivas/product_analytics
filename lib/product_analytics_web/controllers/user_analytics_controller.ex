@@ -10,16 +10,30 @@ defmodule ProductAnalyticsWeb.UserAnalyticsController do
     event_name = Map.get(params, "event_name", nil)
 
     events_query =
-      from(e in Event,
-        where: ^event_name in [nil, e.event_name],
-        group_by: e.user_id,
-        select: %{
-          user_id: e.user_id,
-          last_event_at: max(e.event_time),
-          event_count: count(e.id)
-        },
-        order_by: [desc: max(e.event_time)]
-      )
+      case is_nil(event_name) do
+        true ->
+          from(e in Event,
+            group_by: e.user_id,
+            select: %{
+              user_id: e.user_id,
+              last_event_at: max(e.event_time),
+              event_count: count(e.id)
+            },
+            order_by: [desc: max(e.event_time)]
+          )
+
+        _ ->
+          from(e in Event,
+            where: ^event_name == e.event_name,
+            group_by: e.user_id,
+            select: %{
+              user_id: e.user_id,
+              last_event_at: max(e.event_time),
+              event_count: count(e.id)
+            },
+            order_by: [desc: max(e.event_time)]
+          )
+      end
 
     events = ProductAnalytics.Repo.all(events_query)
     formatted_events = Enum.map(events, &format_event/1)
