@@ -26,6 +26,8 @@ defmodule ProductAnalyticsWeb.Router do
     pipe_through :api
 
     resources "/events", EventController, except: [:new, :edit]
+
+    get "/user_analytics", UserAnalyticsController, :index
   end
 
   # Other scopes may use custom stacks.

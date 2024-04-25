@@ -17,14 +17,14 @@ defmodule ProductAnalytics.Events.Event do
   def changeset(event, attrs) do
     event
     |> cast(attrs, [:user_id, :event_time, :event_name, :attributes])
-    |> validate_required([:user_id, :event_time, :event_name])
+    |> validate_required([:user_id, :event_name, :attributes])
     |> validate_format(:user_id, ~r/^[a-zA-Z0-9_]+$/,
       message: "must contain only letters, numbers, and underscores"
     )
     |> validate_length(:user_id, max: 50)
     |> validate_inclusion(
       :event_name,
-      ["subscription_activated", "payment_received", "unsubscribed"],
+      ["login", "logout", "subscription_activated", "unsubscribed"],
       message: "invalid event name"
     )
     |> handle_event_time()
@@ -33,7 +33,8 @@ defmodule ProductAnalytics.Events.Event do
   defp handle_event_time(changeset) do
     case get_change(changeset, :event_time) do
       x when x == nil or x == "" ->
-        put_change(changeset, :event_time, DateTime.utc_now())
+        date = DateTime.utc_now() |> DateTime.truncate(:second)
+        put_change(changeset, :event_time, date)
 
       _event_time ->
         changeset
